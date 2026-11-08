@@ -2,14 +2,20 @@
 
 from .codec import KansasCityCodec
 
-__all__ = ["KansasCityCodec"]
+__all__ = ["KansasCityCodec", "encode", "decode"]
 
 
-def encode(payload: bytes, **kwargs) -> bytes:
+def _as_bytes(payload: bytes | bytearray | memoryview | str) -> bytes:
+    if isinstance(payload, str):
+        return payload.encode("utf-8")
+    return bytes(payload)
+
+
+def encode(payload: bytes | bytearray | memoryview | str, **kwargs) -> bytes:
     """Encode raw bytes as a Kansas City tape waveform."""
-    return KansasCityCodec(**kwargs).encode(payload)
+    return KansasCityCodec(**kwargs).encode(_as_bytes(payload))
 
 
-def decode(payload: bytes, **kwargs) -> bytes:
+def decode(payload: bytes | bytearray | memoryview | str, **kwargs) -> bytes:
     """Decode a Kansas City tape waveform back to raw bytes."""
-    return KansasCityCodec(**kwargs).decode(payload)
+    return KansasCityCodec(**kwargs).decode(_as_bytes(payload))
