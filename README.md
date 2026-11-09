@@ -6,17 +6,21 @@ A Raspberry Pi **Pico W** sits where the cassette recorder used to be. When
 the computer saves to tape, the Pico decodes the KCS audio and stores the
 bytes on a Linux server over Wi-Fi. When the computer loads, the Pico fetches
 the tape from the server and plays it back as KCS audio. You drive it from
-the computer's serial port with `dir`, `play <name>` and `receive <name>`.
+the computer's serial port with `dir`, `play <name>` and `receive <name>`,
+or from PLAY / RECORD / MOTOR buttons on the Pico. The computer's REMOTE
+motor-control line can start and stop the "tape" like a real recorder.
 
 ```
  vintage computer                    Pico W                         Linux
 ┌──────────────┐  KCS audio   ┌─────────────────┐   VKC/1 TCP   ┌────────────┐
 │ cassette OUT ├─────────────►│ GP2  decode     │               │ tape daemon│
 │ cassette IN  │◄─────────────┤ GP3  encode     ├──────────────►│ (separate  │
-│ serial port  │◄────────────►│ UART cmd port   │   Wi-Fi       │  repo), or │
-└──────────────┘  play/dir/   │ USB  config     │               │ kctool     │
-                  receive     └─────────────────┘               │  serve     │
-                                                                └────────────┘
+│ REMOTE       ├─────────────►│ GP4  motor in   │   Wi-Fi       │  repo), or │
+│ serial port  │◄────────────►│ UART cmd port   │               │ kctool     │
+└──────────────┘  play/dir/   │ USB  config     │               │  serve     │
+                  receive     │ GP5-7  buttons  │               └────────────┘
+                              │ GP8-10 LEDs     │
+                              └─────────────────┘
 ```
 
 | Path | What |
